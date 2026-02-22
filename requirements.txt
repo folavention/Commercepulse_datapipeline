@@ -1,0 +1,6 @@
+pymongo
+psycopg2-binary
+pandas
+python.env
+google-cloud-bigquery
+google-cloud-storage

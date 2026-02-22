@@ -1,0 +1,10 @@
+.env
+data/commercepulse_data_pack
+_pycache_/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/

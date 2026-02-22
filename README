@@ -1,0 +1,21 @@
+# Event Data Pipeline Capstone
+
+This project implements an end-to-end data pipeline for historical and live events.
+
+## Architecture
+- Event generators (historical + live)
+- MongoDB as raw landing zone
+- Transformation and data quality rules
+- Dimensional warehouse (BigQuery-ready)
+
+## Tech Stack
+- Python
+- MongoDB
+- Pandas
+- BigQuery (analytical warehouse)
+
+## Features
+- Idempotent ingestion
+- Late-arriving event handling
+- Data quality classification
+- Fact and dimension modeling
