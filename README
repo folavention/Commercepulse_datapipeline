@@ -1,6 +1,82 @@
 # Event Data Pipeline Capstone
+CommercePulse Data Pipeline
 
-This project implements an end-to-end data pipeline for historical and live events.
+This project implements an end-to-end data pipeline that ingests historical and live commerce events, stores raw data reliably, and produces analytics-ready tables for reporting and querying.
+
+The pipeline is designed to handle real-world challenges such as duplicate events, late arrivals, and schema drift, while remaining simple to run and easy to reason about.
+
+Architecture Overview
+
+Live Event Generator simulates continuous commerce activity with noisy, realistic events.
+
+MongoDB acts as the raw landing zone for both historical and live data.
+
+Transformation Layer (Python / Pandas) normalizes and models events into facts and dimensions.
+
+BigQuery serves as the analytics warehouse for querying and reporting.
+
+Optional Streamlit App provides a control panel and local visibility into pipeline activity.
+
+Key Design Choices
+
+Historical and Live Data
+
+Historical data is loaded once as raw synthetic events.
+
+Live data is generated continuously and ingested incrementally.
+
+Both follow the same raw event structure for consistent processing.
+
+MongoDB vs BigQuery
+
+MongoDB stores unmodified raw events and ensures idempotent ingestion.
+
+BigQuery stores cleaned, modeled tables optimized for analytics.
+
+Upserts and Appends
+
+Raw events are upserted in MongoDB using deterministic event_ids.
+
+Warehouse tables are loaded using append or replace modes depending on use case.
+
+Transformations
+
+Transformations are implemented in Python using Pandas to handle schema drift and complex normalization.
+
+SQL is used primarily for analytics and querying in BigQuery.
+
+Correctness First
+
+The pipeline prioritizes correctness over performance.
+
+Late events and duplicates are handled explicitly.
+
+Idempotent runs ensure reliable results across reprocessing.
+
+Simple but Extensible
+
+Clear separation between ingestion, transformation, and loading.
+
+File-based outputs and loop-based execution keep the system easy to understand.
+
+The architecture allows future scaling or tool replacement if needed.
+
+Outcome
+
+The result is a fully runnable pipeline that:
+
+Ingests historical and live events
+
+Produces analytics-ready fact and dimension tables
+
+Supports required business queries in BigQuery
+
+Demonstrates practical data engineering trade-offs
+
+
+
+
+
 
 ## Architecture
 - Event generators (historical + live)
