@@ -1,0 +1,9 @@
+C:\Users\OWNER\Documents\Commercepulse_case_study\venv\Scripts\python.exe: can't open file 'C:\\Users\\OWNER\\Documents\\Commercepulse_case_study\\SRC\\ingest_live_events.py': [Errno 2] No such file or directory
+Warehouse outputs written to: C:\Users\OWNER\Documents\Commercepulse_case_study\data\warehouse
+events=3980 facts_order=1325 facts_payment=167 facts_refunds=61 facts_shipment=124 facts_order_daily=1004
+C:\Users\OWNER\Documents\Commercepulse_case_study\venv\Scripts\python.exe: can't open file 'C:\\Users\\OWNER\\Documents\\Commercepulse_case_study\\SRC\\ingest_live_events.py': [Errno 2] No such file or directory
+Warehouse outputs written to: C:\Users\OWNER\Documents\Commercepulse_case_study\data\warehouse
+events=3980 facts_order=1325 facts_payment=167 facts_refunds=61 facts_shipment=124 facts_order_daily=1004
+C:\Users\OWNER\Documents\Commercepulse_case_study\venv\Scripts\python.exe: can't open file 'C:\\Users\\OWNER\\Documents\\Commercepulse_case_study\\SRC\\ingest_live_events.py': [Errno 2] No such file or directory
+Warehouse outputs written to: C:\Users\OWNER\Documents\Commercepulse_case_study\data\warehouse
+events=3980 facts_order=1325 facts_payment=167 facts_refunds=61 facts_shipment=124 facts_order_daily=1004

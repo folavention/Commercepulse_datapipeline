@@ -1,6 +1,8 @@
 pymongo
 psycopg2-binary
 pandas
-python.env
+python-dotenv
 google-cloud-bigquery
 google-cloud-storage
+streamlit
+

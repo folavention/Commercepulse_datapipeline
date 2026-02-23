@@ -1,0 +1,2 @@
+C:\Users\OWNER\Documents\Commercepulse_case_study\data\commercepulse_data_pack\src\live_event_generator.py:223: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  ingested_at = datetime.datetime.utcnow()
