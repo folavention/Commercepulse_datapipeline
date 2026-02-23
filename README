@@ -19,3 +19,9 @@ This project implements an end-to-end data pipeline for historical and live even
 - Late-arriving event handling
 - Data quality classification
 - Fact and dimension modeling
+
+## SQL Deliverables
+- BigQuery warehouse schema DDL: `SRC/sql/bigquery_schema.sql`
+- BigQuery indexing/performance strategy: `SRC/sql/index_strategy.sql`
+  - Uses partitioning + clustering as primary performance strategy
+  - Includes optional `SEARCH INDEX` statements for selective lookups
