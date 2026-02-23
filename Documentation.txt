@@ -1,0 +1,157 @@
+Historical Batch vs Live Event Handling
+
+The pipeline handles two distinct types of data:
+
+Historical data (bootstrap files for orders, payments, refunds, and shipments)
+
+Live events generated continuously to simulate real-time system activity
+
+Historical data is loaded once into MongoDB as raw events. Each record is wrapped as a synthetic event with metadata such as event_id, event_type, event_time, and ingested_at. No cleaning or transformation is applied at this stage. This ensures historical and live data share the same raw structure and can be processed uniformly downstream.
+
+Live events are generated continuously and written as JSONL files. These events include duplicates, late arrivals, and schema drift to reflect real-world behavior. A looping ingestion process continuously reads these events and upserts them into MongoDB.
+
+This separation allows:
+
+Deterministic bootstrapping of historical data
+
+Continuous ingestion of live data
+
+A unified raw event model for downstream processing
+
+MongoDB vs BigQuery Responsibilities
+
+MongoDB and BigQuery serve different purposes in the architecture.
+
+MongoDB is used as the raw landing zone:
+
+Stores unmodified historical and live events
+
+Handles high write throughput
+
+Supports flexible schemas (important due to schema drift)
+
+Acts as the system of record for all incoming events
+
+MongoDB is not used for analytics or reporting.
+
+BigQuery is used as the analytics warehouse:
+
+Stores cleaned, normalized, and modeled data
+
+Contains dimension and fact tables
+
+Supports analytical queries required by the business use cases
+
+Optimized for aggregation, filtering, and reporting
+
+This separation keeps ingestion simple and reliable, while allowing analytics to scale independently.
+
+Append-Only vs Upsert Strategy
+
+Two different write strategies are used at different stages of the pipeline.
+
+MongoDB: Upsert
+
+Events are written using event_id as a unique key
+
+Duplicate events are safely ignored
+
+Late-arriving events are correctly handled
+
+Ingestion is idempotent
+
+This is necessary because live event streams are noisy and unreliable by nature.
+
+Warehouse Outputs: Append (with controlled rebuilds)
+
+Transformed fact and dimension tables are written as CSV files
+
+BigQuery loads typically use APPEND
+
+REPLACE mode is supported when a full rebuild is required
+
+This approach avoids complex merge logic in the warehouse while still allowing correctness through periodic rebuilds.
+
+Pandas vs SQL Transformations
+
+Transformations are performed using Pandas, not SQL.
+
+Reasons for choosing Pandas:
+
+Raw data originates from MongoDB and JSON payloads
+
+Vendor schemas are inconsistent and require Python-level normalization
+
+Business logic (deduplication, late event handling, normalization) is easier to express in Python
+
+Faster iteration and clearer logic for this project’s scope
+
+SQL is reserved for:
+
+Schema definition
+
+Analytical queries in BigQuery
+
+Downstream reporting use cases
+
+This choice prioritizes clarity and correctness over pushing all logic into the warehouse.
+
+Correctness vs Performance
+
+The pipeline prioritizes correctness over raw performance.
+
+Examples:
+
+Events are reprocessed in loops to handle late arrivals
+
+Deduplication is enforced using deterministic event_ids
+
+Transformations may re-scan recent data instead of relying on strict watermarks
+
+This is intentional:
+
+The dataset size is manageable
+
+Correct analytics are more important than minimal compute cost
+
+The design mirrors real-world systems that favor eventual consistency
+
+Performance optimizations can be added later once correctness is guaranteed.
+
+Simplicity vs Long-Term Maintainability
+
+The system is designed to be simple but extensible.
+
+Choices made for simplicity:
+
+File-based intermediate outputs (CSV)
+
+Clear separation between ingest, transform, and load stages
+
+Minimal orchestration logic (loop-based execution instead of complex schedulers)
+
+Support for long-term maintainability:
+
+Modular scripts with clear responsibilities
+
+Deterministic IDs and idempotent processing
+
+Explicit configuration via environment variables
+
+Ability to swap components (e.g., replace Pandas with SQL/dbt later)
+
+This balance makes the project easy to understand while still reflecting real data engineering patterns.
+
+Summary
+
+This pipeline demonstrates:
+
+Unified handling of historical and live event data
+
+Clear separation between raw storage and analytics
+
+Idempotent, resilient ingestion
+
+Practical trade-offs between correctness, performance, and simplicity
+
+The design reflects real-world data engineering constraints while remaining runnable and understandable as a standalone project.
